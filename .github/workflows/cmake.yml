@@ -19,16 +19,19 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+      with:
+        submodules: true
 
     - name:
       run: |
+       sudo add-apt-repository ppa:ubuntu-toolchain-r/test
        sudo apt-get update
-       sudo apt-get -y install libsdl2-dev libsdl2-net-dev libpng-dev libfluidsynth-dev
+       sudo apt-get -y install gcc-6 g++-6 libsdl2-dev libsdl2-net-dev libpng-dev libfluidsynth-dev
 
     - name: Configure CMake
       # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
       # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
-      run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+      run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DENABLE_SYSTEM_FLUIDSYNTH=OFF
 
     - name: Build
       # Build your program with the given configuration
